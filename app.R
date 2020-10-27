@@ -35,7 +35,7 @@ ui <- fluidPage(
            <br>
            <b>"),
       
-      tags$a(href="https://www.github.com/SLINGhub/LICAR/manual/LICAR_Manual.pdf", "Download the user manual.")
+      tags$a(href="https://github.com/SLINGhub/LICAR/blob/main/manual/LICAR_Manual.pdf", "Download the user manual.")
 
     ),
     
