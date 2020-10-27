@@ -20,7 +20,7 @@ Open the script `app.R` and click on the 'Run App' button. Alternatively, you ca
 
 ## Manual
 
-For details on the usage please refer to the [LICAR manual](../../wiki)
+For details on the usage please refer to the [LICAR manual](https://www.github.com/SLINGhub/LICAR/manual/LICAR_Manual.pdf)
 
 ## Report Bugs and Contribute
 
