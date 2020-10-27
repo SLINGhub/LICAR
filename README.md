@@ -16,7 +16,7 @@ Following packages must be installed in R to run the scripts
 
 ## Run the Shiny App
 
-Open the script `app.R` in the `R` directory and click on the 'Run App' button. Alternatively, you can start the 
+Open the script `app.R` and click on the 'Run App' button. Alternatively, you can start the app via by typing shiny::runApp()
 
 ## Manual
 
