@@ -1,0 +1,26 @@
+Lipid class,Class abbreviations,Example name,Example MRM,Product ion type*,MRM pattern**
+Lysophosphatidylcholine,"LPC	",LPC 20:3,546.4->184.1,Headgroup,LPC (Pos) Pro=184.1
+Lysoplasmanylcholine,LPC O-,LPC O-20:4,530.4->104.1,Headgroup,LPC-O (Pos) Pro=104.1
+Lysoplasmanylcholine,LPC O-,LPC O-20:4,530.4->184.1,Headgroup,"LPC-O (Pos,qualifier) Pro=184.1"
+Lysophosphatidylethanolamine,LPE,LPE 18:1,480.3->339.3,Headgroup,LPE (Pos) Pre-Pro=141
+Lysophosphatidylethanolamine,LPE,LPE 18:1,478.3->196.0,Headgroup,LPE (Neg) Pro=196
+Phosphatidylcholine,PC,PC 32:0,734.6->184.1,Headgroup,PC (Pos) Pro=184.1
+Phosphatidylcholine,PC,PC 16:0_18:1,804.6->281.2,FA,PC (Neg) FA
+Phosphatidylethanolamine,PE,PE 38:4,768.6->627.5,Headgroup,PE (Pos) Pre-Pro=141
+Phosphatidylethanolamine,PE,PE 38:4,766.6->196.0,Headgroup,PE (Neg) Pro=196
+Phosphatidylethanolamine,PE,PE 18:0/20:4,"	766.6->303.2",FA,PE (Neg) FA
+Plasmenylethanolamine,PE P-,"PE P-18:1/20:4	",750.5->361.3,FA,PE-P (Pos) FA
+Phosphatidylinositol,PI,PI 36:2,"	880.6->603.6",Headgroup,PI (Pos) Pre-Pro=277
+Phosphatidylinositol,PI,PI 36:2,"	880.6->241.0",Headgroup,PI (Neg) Pro=241
+Phosphatidylinositol,PI,PI 18:1_18:1,"	861.5->281.2",FA,PI (Neg) FA
+Phosphatidylserine,PS,PS 38:4,"	812.5->627.5",Headgroup,PS (Pos) Pre-Pro=185
+Phosphatidylserine,PS,PS 38:4,"	810.5->723.5",Headgroup,PS (Neg) Pre-Pro=87
+Phosphatidylserine,PS,PS 20:4_18:0,"	810.5->283.2",FA,PS (Neg) FA
+Phosphatidylglycerol,PG,PG 36:2,"	792.6->603.5",Headgroup,PG (Pos) Pre-Pro=189
+Phosphatidylglycerol,PG,PG 36:2,"	773.6->153.0",Headgroup,PG (Neg) Pro=153
+Phosphatidylglycerol,PG,PG 18:1_18:1,"	773.5->281.2",FA,PG (Neg) FA
+Sphingomyelin,SM,SM 34:1,703.6->184.1,Headgroup,SM (Pos) Pro=184.1
+Ceramides,Cer,Cer d18:1/16:0,"	538.5->264.3",LCB,Cer (Pos) SphB-H2O
+Dehydroxyceramides,dhCer,dhCer d18:0/22:0,"	624.6->284.3",LCB,dhCer (Pos) SphB
+Monohexosylceramides,Hex1Cer,Hex1Cer d18:1/24:0,"	812.7->264.3",LCB,Hex1Cer (Pos) SphB-H2O
+Dihexosylceramides,Hex2Cer,Hex2Cer d18:1/16:0,"	862.6->264.3",LCB,Hex2Cer (Pos) SphB-H2O
