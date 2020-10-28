@@ -37,7 +37,7 @@ knitr::opts_chunk$set(echo = TRUE)
 * subsequent columns contain the lipids abundance values to be corrected
 * Please note that the first row is reserved for column names
 
- Example templates for all lipid classes currently covered by LICAR are available on [GitHub](https://github.com/SLINGhub/LICAR/).
+ Example templates for all lipid classes currently covered by LICAR are available on [https://github.com/SLINGhub/LICAR](https://github.com/SLINGhub/LICAR/).
  Please note that:
 
 * the MRM transitions listed are by no means exhaustive, the application will "read" any lipid species within a covered class.
@@ -97,7 +97,7 @@ kable_styling(latex_options = c("striped", "scale_down")) %>%
 
 ### 2.4.Run the Shiny App
 
- Open the script `LICAR_UI.R` in the `R` directory and click on the 'Run App' button.
+ Open the script `app.R` and click on the 'Run App' button.
  
  \newpage
 
