@@ -37,7 +37,11 @@ knitr::opts_chunk$set(echo = TRUE)
 * subsequent columns contain the lipids abundance values to be corrected
 * Please note that the first row is reserved for column names
 
- Example templates for all lipid classes currently covered by LICAR are available on [https://github.com/SLINGhub/LICAR](https://github.com/SLINGhub/LICAR/).
+ Example templates for all lipid classes currently covered by LICAR are available at:
+ 
+ [https://github.com/SLINGhub/LICAR](https://github.com/SLINGhub/LICAR/).
+ 
+ 
  Please note that:
 
 * the MRM transitions listed are by no means exhaustive, the application will "read" any lipid species within a covered class.
