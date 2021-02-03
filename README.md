@@ -2,7 +2,7 @@
 # LICAR
 
 Functions and a Shiny app to correct class-based separation LC-MRM-MS lipidomics data for isotopic interferences.
-Online Shiny ap available at https://slinghub.shinyapps.io/LICAR/.
+Online Shiny app available at https://slinghub.shinyapps.io/LICAR/.
 
 ## Download the code
 You can download the Github repository (https://github.com/SLINGhub/LICAR.git) and open the Rstudio project. Alternatively, you can clone this repository using git, e.g. in RStudio.  
