@@ -1,3 +1,4 @@
+Published in: *Analytical Chemistry* February 3, 2021 [doi: 10.1021/acs.analchem.0c04565] https://doi.org/10.1021/acs.analchem.0c04565
 
 # LICAR
 
