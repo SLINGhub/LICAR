@@ -191,7 +191,7 @@ server <- function(input, output) {
   # Perform isotopic correction with "isoCorrection" from "methods.R"
   correctedResults <- reactive(
     {
-      isoCorrection <- isoCorrect(rawData(), lipidClass = input$lipidClass, lipidGroup = input$productIon)
+      isoCorrection <- isoCorrect(rawData(), lipidClass = input$lipidClass, lipidGroup = input$productIon, isotope_no = 2)
       }
     )
   
