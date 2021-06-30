@@ -3,6 +3,13 @@
 library(enviPat) #M calculation for isotopic correction
 library(tidyverse)
 
+
+quiet <- function(x) { 
+  sink(tempfile()) 
+  on.exit(sink()) 
+  invisible(force(x)) 
+} 
+
 ##' @title Relative abundance of M+2 of the molecular species with lower molecular mass.
 ##' @param molec Formula of the lipid without Head Group.
 ##' @return Relative abundance of M+2.
@@ -13,10 +20,10 @@ mCalc <- function (molec, isotope_no)
   data(resolution_list) #Needed in 'enviPat'
   checked<-check_chemform( isotopes, molec )
   
-  centro<-isowrap( isotopes, checked, resmass=resolution_list[[7]], resolution=FALSE, 
+  centro<-quiet(isowrap( isotopes, checked, resmass=resolution_list[[7]], resolution=FALSE, 
                    nknots=4, spar=0.2, threshold=0.1, charge=1, emass=0.00054858, algo=2, ppm=FALSE, 
                    dmz="get", frac=1/4, env="Gaussian", detect="centroid",
-                   plotit=FALSE #Plot the grahp if plotit=TRUE
+                   plotit=FALSE) #Plot the grahp if plotit=TRUE
   )
   
   centro <- data.frame(centro)
@@ -26,7 +33,7 @@ mCalc <- function (molec, isotope_no)
 
 
 
-get_rel_abundance <- function(lipid_species, lipid_fragment_class, product_mz, isotope_no){
+get_rel_abundance <- function(lipid_species, lipid_fragment_class, isotope_no, product_mz = NA){
   
   head_group_classes <- c("LPC", "LPCO", "LPCOql", "PC", "SM", "LPE", "PE", "PI", "PG", "PS", "S1P", 
     "S1Pql", "LPENHG", "PENHG", "PINHG", "PGNHG", "PSNHG")
@@ -43,11 +50,12 @@ get_rel_abundance <- function(lipid_species, lipid_fragment_class, product_mz, i
     TRUE ~ "error"
   )
   if (lipidGroup == "error") stop("Lipid fragment class not defined in LICAR")
+  if (lipid_fragment_class %in% head_group_classes && is.na(product_mz)) stop("For this lipid fragment class the product_mz parameter must be set")
   
-  df <- tibble(lipidSpecies = lipid_species, Product = product_mz, isotopeNo = isotope_no ) %>%
+  df <- tibble(lipidSpecies = lipid_species, Product = product_mz, isotope_no = isotope_no ) %>%
     column_to_rownames("lipidSpecies")
   
-  res <- isoCorrect(inputData = df, lipidClass = lipid_class, lipidGroup = fragment_type, isotope_no = isotope_no)   
+  res <- isoCorrect(inputData = df, lipidClass = lipid_fragment_class, lipidGroup = lipidGroup, isotope_no = isotope_no)   
   res <- res %>% rownames_to_column("species_name") 
   
   return(res)
@@ -66,7 +74,7 @@ isoCorrect <- function(inputData, lipidClass, lipidGroup, isotope_no) {
   # check if data contains table with values to be corrected, or a list of species for which the 
   # relative isotope abundance of the product ion should be calculated (function get_rel_isotope_abundance)
   
-  if(!("isotopeNo" %in% names(df))){
+  if(!("isotope_no" %in% names(inputData))){
     is_dataset <- TRUE
     if( length(inputData$Precursor) == 0 ) stop("Precursor is missing!")
     if( length(inputData$Product) == 0 ) stop("Product is missing!")
@@ -132,7 +140,7 @@ isoCorrect_head <- function(inputData, constant_C, constant_H, constant_O, const
   if (!is_dataset){
     inputData <- inputData %>%  
       dplyr::select( -C_raw:-H) %>%
-      dplyr::select("product_mz" = "Product", "fragment_formula" = "Formula","isotope_no" = "isotopeNo", "rel_abundance" = "K")
+      dplyr::select("product_mz" = "Product", "fragment_formula" = "Formula","isotope_no" = "isotope_no", "rel_abundance" = "K")
     
     return(inputData)
     
@@ -334,7 +342,7 @@ isoCorrect_LCB <- function(inputData, lipidClass, isotope_no, is_dataset) {
     
     inputData <- inputData %>%  
       dplyr::select("product_mz" = "Product", "fragment_formula_front" = "formula_front", "fragment_formula_back" = "formula_back", 
-                    "isotope_no" = "isotopeNo", rel_abundance_front, rel_abundance_back)
+                    "isotope_no" = "isotope_no", rel_abundance_front, rel_abundance_back)
     
     return(inputData)
     

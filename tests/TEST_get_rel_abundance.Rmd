@@ -1,0 +1,64 @@
+---
+title: "LICAR function 'get_rel_abundance'"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{=html}
+<style type="text/css">
+  body{
+  font-size: 08pt;
+}
+</style>
+```
+```{r setup, include = FALSE}
+library(here)
+library(tidyverse)
+
+options(width = 150)
+
+source(here("R/LICAR_functions.R"))
+```
+
+### Isotopes that interfere with fully saturated PCs in the BakerPanel
+
+PC 26:0 \| SM 30:1 M+3, PC 28:0 \| SM 32:1 M+3, PC 30:0 \| SM 34:1 M+3, PC 32:0 \| SM 36:1 M+3, PC 34:0 \| SM 38:1 M+3
+
+```{r}
+get_rel_abundance(lipid_species = c("SM 30:1", "SM 32:1", "SM 34:1", "SM 36:1", "SM 38:1"), 
+                  lipid_fragment_class = "SM", product_mz = "184", isotope_no = 3)
+```
+
+### S1P
+
+Returning formula of chosen fragment and relative abundance of chosen isotope. Values slightly differ from out paper..
+
+```{r}
+get_rel_abundance(lipid_species = c("S1P d18:1", "S1P d18:2"), 
+                  lipid_fragment_class = "S1P", product_mz = "60", isotope_no = 2)
+```
+
+### One transition with a 'LCB' as product ion
+
+```{r}
+get_rel_abundance(lipid_species = c("Cer d18:1/24:0"), 
+                  lipid_fragment_class = "Cer",isotope_no = 3)
+```
+
+### Multiple transitions with 'LCB' monitored
+
+```{r}
+get_rel_abundance(lipid_species = c("Cer d18:1/24:0", "Cer d18:1/24:1"), 
+                  lipid_fragment_class = "Cer", product_mz = "184", isotope_no = 3) 
+```
+
+### Mix of transitions where 'head group' or 'LCB' as product ion
+
+ATTENTION: the script treats below PC 38:2 as transition with LCB fragment.. (?) User has to make sure that the lipid_fragment_class is set correctly
+
+```{r}
+get_rel_abundance(lipid_species = c("Cer d18:1/24:0", "Cer d18:1/24:1", "PC 38:2"), 
+                  lipid_fragment_class = "Cer", isotope_no = 2)
+```

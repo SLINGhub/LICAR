@@ -3,9 +3,7 @@ library(tidyverse)
 
 source(here("R/LICAR_functions.R"))
 
-
-d_input <- read_csv(here("data/test/PC26_0_SM30_1.csv"), trim_ws = TRUE,col_names = TRUE) |> 
-  column_to_rownames("filename")
-
-res <- isoCorrect(d_input, lipidClass = "SM", lipidGroup = "Head Group")
+res <- get_rel_abundance(lipid_species = "SM 32:1", lipid_fragment_class = "SM", product_mz = "184", isotope_no = 3)
+res <- get_rel_abundance(lipid_species = c("Cer d18:1/24:0", "Cer d18:1/24:1"), lipid_fragment_class = "Cer", product_mz = "184", isotope_no = 3)
+res <- get_rel_abundance(lipid_species = c("Cer d18:1/24:0"), lipid_fragment_class = "Cer", product_mz = "184", isotope_no = 3)
 
