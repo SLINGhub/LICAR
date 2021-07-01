@@ -40,23 +40,16 @@ get_rel_abundance(lipid_species = c("S1P d18:1", "S1P d18:2"),
                   lipid_fragment_class = "S1P", product_mz = "60", isotope_no = 2)
 ```
 
-### One transition with a 'LCB' as product ion
-
-```{r}
-get_rel_abundance(lipid_species = c("Cer d18:1/24:0"), 
-                  lipid_fragment_class = "Cer",isotope_no = 3)
-```
-
-### Multiple transitions with 'LCB' monitored
+### Multiple transitions with 'LCB' as product ion
 
 ```{r}
 get_rel_abundance(lipid_species = c("Cer d18:1/24:0", "Cer d18:1/24:1"), 
-                  lipid_fragment_class = "Cer", product_mz = "184", isotope_no = 3) 
+                  lipid_fragment_class = "Cer", isotope_no = 3) 
 ```
 
-### Mix of transitions where 'head group' or 'LCB' as product ion
+### CAREFUL: Mix of transitions where 'head group' or 'LCB' as product ion
 
-ATTENTION: the script treats below PC 38:2 as transition with LCB fragment.. (?) User has to make sure that the lipid_fragment_class is set correctly
+The script treats below PC 38:2 as transition with LCB fragment.. (!?) User has to make sure that the lipid_fragment_class is set correctly
 
 ```{r}
 get_rel_abundance(lipid_species = c("Cer d18:1/24:0", "Cer d18:1/24:1", "PC 38:2"), 
