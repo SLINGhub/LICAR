@@ -53,7 +53,7 @@ ui <- fluidPage(
               If no, please check and re-upload your raw data file.</b>
            <br/><br/>"),
       
-      #Chech whether data belong to one class
+      #Check whether data belong to one class
       textOutput('classError'),
       
       # Output: Raw data file
