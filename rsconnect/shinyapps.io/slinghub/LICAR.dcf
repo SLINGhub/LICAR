@@ -1,0 +1,13 @@
+name: LICAR
+title: LICAR
+username:
+account: slinghub
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3047240
+bundleId: 5177407
+url: https://slinghub.shinyapps.io/LICAR/
+when: 1635229782.94303
+lastSyncTime: 1635229782.94303
+asMultiple: FALSE
+asStatic: FALSE
