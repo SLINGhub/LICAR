@@ -28,7 +28,9 @@ For details on the usage please refer to the [LICAR manual](https://github.com/S
 
 Submit a [Github Issue](https://github.com/SLINGhub/LICAR/issues) or [Pull request](https://github.com/SLINGhub/LICAR/pulls)
 
+## November 2021 update
 
+Several lipid classes and adducts added to the original.
 
 
 ## Contact
