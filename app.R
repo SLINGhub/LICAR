@@ -6,7 +6,7 @@ options(shiny.maxRequestSize=50*1024^2)
 source("R/LICAR_functions.R")
 
 ui <- fluidPage(
-  titlePanel("LICAR"),
+  titlePanel("Isotopic correction for HILIC-MRM"),
   
   sidebarLayout(
     
@@ -31,12 +31,12 @@ ui <- fluidPage(
            <br>
            - R packages needed: 'enviPat'<br>
            <br>
-           - When correcting the intensities of very low abundance peaks or when the interfering tranistions is very intense, measurement variations may result in negative corrected values. LICAR replaces these negative values by 0 and does not proceed with further correction.<br>
+           - When correcting the intensities of very low abundance peaks, measurement variations may result in negative corrected values. LICAR replaces these negative values by 0 and does not proceed with further correction.<br>
            <br>
            <b>"),
       
       tags$a(href="https://github.com/SLINGhub/LICAR/blob/main/manual/LICAR_Manual.pdf", "Download the user manual.")
-      
+
     ),
     
     
@@ -53,7 +53,7 @@ ui <- fluidPage(
               If no, please check and re-upload your raw data file.</b>
            <br/><br/>"),
       
-      #Check whether data belong to one class
+      #Chech whether data belong to one class
       textOutput('classError'),
       
       # Output: Raw data file
@@ -79,9 +79,9 @@ ui <- fluidPage(
       # Click to calculate and download the ratio of peak areas between after and before isotopic correction
       inputPanel(downloadButton("downloadRatios","Download Ratios"))
       
+      )
     )
   )
-)
 
 server <- function(input, output) {
   
@@ -104,11 +104,14 @@ server <- function(input, output) {
       choices1 = list( "AcylCarnitine (Pos) Pro=85" = "AcylCarnitine",
                        "LPC (Pos) Pro=184.1" = "LPC",
                        "LPC (Pos) Pro=104.1" = "LPCql",
+                       "LPC d9 Pro=193.1" = "LPC_d9",
                        "LPC-O (Pos) Pro=104.1" = "LPCO",
                        "LPC-O (Pos, qualifier) Pro=184.1" = "LPCOql",
                        "LPE (Pos) Pre-Pro=141" = "LPE",
                        "LPE (Neg) Pro=196.1" = "LPENHG",
+                       "LPI (Pos) Pre-Pro=277" = "LPI",
                        "PC (Pos) Pro=184.1" = "PC",
+                       "PC d9 Pro=193.1" = "PC_d9",
                        "PCO (Pos) Pro=184.1" = "PCO",
                        "PCP (Pos) Pro=184.1" = "PCP",
                        "PE (Pos) Pre-Pro=141" = "PE",
@@ -125,19 +128,25 @@ server <- function(input, output) {
     } else if(input$productIon %in% "FA") {
       choices1 = list( "CL (Neg) FA" = "CLNFA",
                        #"CL (Neg, doubly charged) FA" = "CLNFA_2",
-                       "LPC (Neg, Formate adduct) FA" = "LPCNFA",
-                       "LPC (Neg, acetate adduct) FA" = "LPCNFA_2",
+                       "LPC (Neg, FA) FA" = "LPCNFA",
+                       "LPC (Neg, AA) FA" = "LPCNFA_2",
+                       "LPC (Neg, -CH3) FA" = "LPCNFA_3",
                        "LPE (Neg) FA" = "LPENFA",
                        "LPI (Neg) FA" = "LPINFA",
                        "LPG (Neg) FA" = "LPGNFA",
-                       "PC (Neg, Formate adduct) FA" = "PCNFA",
-                       "PCO (Neg, Formate adduct) FA" = "PCONFA",
-                       "PCP (Neg, Formate adduct) FA" = "PCPNFA",
-                       "PC (Neg, acetate adduct) FA" = "PCNFA_2",
-                       "PCO (Neg, acetate adduct) FA" = "PCONFA_2",
-                       "PCP (Neg, acetate adduct) FA" = "PCPNFA_2",
+                       "FA (Neg) SIM" = "FA",
+                       "PC (Neg, FA) FA" = "PCNFA",
+                       "PCO (Neg, FA) FA" = "PCONFA",
+                       "PCP (Neg, FA) FA" = "PCPNFA",
+                       "PC (Neg, AA) FA" = "PCNFA_2",
+                       "PC (Neg, -CH3) FA" = "PCNFA_3",
+                       "PCO (Neg, AA) FA" = "PCONFA_2",
+                       "PCO (Neg, -CH3) FA" = "PCONFA_3",
+                       "PCP (Neg, AA) FA" = "PCPNFA_2",
+                       "PCP (Neg, -CH3) FA" = "PCPNFA_3",
                        "PE (Neg) FA" = "PENFA",
                        "PEO (Neg) FA" = "PEONFA",
+                       "PEP (Neg) FA" = "PEPNFA",
                        "PE-P (Pos) FA" = "PEP",
                        "PG (Neg) FA" = "PGNFA",
                        "PI (Neg) FA" = "PINFA",
@@ -155,73 +164,75 @@ server <- function(input, output) {
     } else if(input$productIon %in% "Neutral") {
       choices1 = list(  "CE (Pos) FANL" = "CE",
                         "DG (Pos) FANL" = "DG",
-                        "TG (Pos) FANL" = "TG")
+                        "TG (Pos) FANL" = "TG",
+                        "MG (Pos) Pre-Pro=109" = "MG",
+                        "MG (Pos) SIM)" = "MGSIM")
     } else if(input$productIon %in% "RPLC") {
       choices1 = list(  "SM -> PC Pro=184.1" = "PC",
                         "PC-P -> PC-O Pro=184.1" = "PCO")
     }
     
+ 
+  
+  # Check the lipid class is unique or not
+  output$classError <- renderText({
+    class_name <- sub( " .*", "", rownames(rawData()) )
+    if( (length(table(class_name)) > 1) & (input$productIon %in% c("Head Group", "FA", "LCB", "Neutral"))) {
+      stop(paste("Lipid class is not unique, please check the data! Continue if it belongs to group RPLC."))
+    }})
     
-    
-    # Check the lipid class is unique or not
-    output$classError <- renderText({
-      class_name <- sub( " .*", "", rownames(rawData()) )
-      if( (length(table(class_name)) > 1) && (input$productIon %in% c("Head Group", "FA", "LCB", "Neutral"))) {
-        stop(paste("Lipid class is not unique, please check the data! Continue if it belongs to group RPLC."))
-      }})
-    
-    
-    # Display the selected raw data table
-    output$contents <- renderTable({
-      if(input$disp == "head") {return(head(rawData()))}
-      else {return(rawData())}
-    }, rownames = 1)
-    
-    
+ 
+  # Display the selected raw data table
+  output$contents <- renderTable({
+    if(input$disp == "head") {return(head(rawData()))}
+    else {return(rawData())}
+  }, rownames = 1)
+  
+  
     selectInput("lipidClass",label = "3) Choose lipid class and MRM pattern:",
                 choices = choices1)
     
-  })
+    })
   
   
   # Perform isotopic correction with "isoCorrection" from "methods.R"
   correctedResults <- reactive(
     {
       isoCorrection <- isoCorrect(rawData(), lipidClass = input$lipidClass, lipidGroup = input$productIon)
-    }
-  )
+      }
+    )
   
   # Display the isotopic corrected data table
   observeEvent(input$goButton,{
     output$results <- renderTable({
       if(input$disp == "head") {return(head(correctedResults()))}
       else {return(correctedResults())}
-    }, rownames = 1)
-  })
+      }, rownames = 1)
+    })
   
   # Download the isotopic corrected data file
   output$downloadResults <- downloadHandler(
     filename = function() {
       fpath <- input$file1$datapath
       paste("Results of isotopic correction for ", input$file1$name, sep="")
-    },
+      },
     content = function(file) {write.csv(correctedResults(), file)}
-  )
+    )
   
   # Calculate and download the ratio of peak areas between before and after isotopic correction
   output$downloadRatios <- downloadHandler(
     filename = function() {
       fpath <- input$file1$datapath
       paste("Ratios after_before isotopic correction for ", input$file1$name, sep="")
-    },
+      },
     content = function(file) {
       
       ratio <- correctedResults() / rawData()
       ratio[, c("Precursor", "Product")] <- rawData()[, c("Precursor", "Product")]
       write.csv(ratio, file)
-    }
-  )
+      }
+    )
   
-}
+  }
 
 shinyApp(ui = ui, server = server)
